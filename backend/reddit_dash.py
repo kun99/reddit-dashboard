@@ -26,7 +26,6 @@ reddit = praw.Reddit(
 async def get_subreddit_posts(subreddit):
     fetched_posts = []
     subreddit = reddit.subreddit(subreddit).hot(limit=10)
-    print(subreddit)
     for submission in subreddit:
         json_file = {
         'title': submission.title,
@@ -34,7 +33,6 @@ async def get_subreddit_posts(subreddit):
         'url': "https://www.reddit.com" + submission.permalink
         }
         fetched_posts.append(json_file)
-    print(fetched_posts)
     return {"posts": fetched_posts}
 
 
@@ -42,6 +40,8 @@ async def get_subreddit_posts(subreddit):
 async def get_subreddit_posts(subreddits):
     fetched_subreddits = []
     subs = subreddits.split(",")
+    subs.pop()
+    print(subs)
     for subreddit in subs:
         fetched_posts = []
         subreddit = reddit.subreddit(subreddit).hot(limit=10)
@@ -53,5 +53,4 @@ async def get_subreddit_posts(subreddits):
             }
             fetched_posts.append(json_file)
         fetched_subreddits.append(fetched_posts)
-    print(fetched_subreddits)
     return {"subreddits": fetched_subreddits}
