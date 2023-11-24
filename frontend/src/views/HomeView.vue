@@ -2,7 +2,13 @@
 import { ref, onBeforeMount } from "vue";
 import axios from "axios";
 
-const followedSubreddits = ref(["soccer", "worldnews", "coys", "fitness"]);
+const followedSubreddits = ref([
+  "learnprogramming",
+  "cscareerquestions",
+  "csmajors",
+  "devops",
+]);
+
 const subreddits = ref([]);
 
 async function fetchSubreddit() {
@@ -34,7 +40,10 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="flex justify-center text-2xl mt-5">Reddit Dashboard</div>
+  <div class="flex justify-center text-2xl mt-5">
+    <img src="../../assets/dreddit.png" class="pr-3" />
+    Reddit Dashboard
+  </div>
   <div class="grid grid-cols-4 py-8">
     <div v-for="(subreddit, index) in subreddits.subreddits">
       <div class="flex flex-row pb-4">
@@ -43,6 +52,7 @@ onBeforeMount(() => {
           r/{{ followedSubreddits[index] }}
         </div>
         <div class="flex justify-end w-1/3">
+          <font-awesome-icon class="pt-2 pr-1 text-xs" icon="fa-solid fa-pencil"/>
           <p
             class="text-stone-400 rounded-md w-5 flex justify-center cursor-pointer"
             @click="deleteSubreddit(followedSubreddits[index])"
@@ -59,7 +69,7 @@ onBeforeMount(() => {
             class="h-48 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100"
           >
             <p
-              class="h-32 overflow-auto text-ellipsis mb-2 text-xl font-bold tracking-tight text-gray-900"
+              class="h-28 mb-4 overflow-auto text-ellipsis text-xl font-bold tracking-tight text-gray-900"
             >
               {{ submission.title }}
             </p>

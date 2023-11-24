@@ -49,7 +49,8 @@ async def get_subreddit_posts(subreddits):
             json_file = {
             'title': submission.title,
             'upvotes': str(submission.score),
-            'url': "https://www.reddit.com" + submission.permalink
+            'url': "https://www.reddit.com" + submission.permalink,
+            'image': submission.url
             }
             fetched_posts.append(json_file)
         fetched_subreddits.append(fetched_posts)
