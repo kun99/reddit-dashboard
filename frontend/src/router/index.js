@@ -1,13 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import DashView from '../views/DashView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/dash',
+      name: 'dash',
+      component: DashView
+    },
+    {
       path: '/',
-      name: 'home',
-      component: HomeView
+      name: 'landing',
+      component: () => import("@/views/LandingView.vue")
+    },
+    {
+      path: '/',
+      name: 'login',
+      component: () => import("@/views/LoginView.vue")
     },
   ]
 })

@@ -40,10 +40,6 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="flex justify-center text-2xl mt-5">
-    <img src="../../assets/dreddit.png" class="pr-3" />
-    Reddit Dashboard
-  </div>
   <div class="grid grid-cols-4 py-8">
     <div v-for="(subreddit, index) in subreddits.subreddits">
       <div class="flex flex-row pb-4">
