@@ -2,28 +2,19 @@
 import { ref, onBeforeMount } from "vue";
 import axios from "axios";
 
-const subs = ref([
-  "cscareerquestions",
-  "csmajors",
-  "devops",
-  "learnprogramming",
-]);
+const subs = ref(["---", "---", "---", "---"]);
 
-const subreddits = ref([]);
+const subreddits = ref([["---"], ["---"], ["---"], ["---"]]);
 
 async function fetchSubreddit() {
-  if (subs.value[0] != "---") {
-    var requestingSubs = "";
-    requestingSubs = subs.value.filter((sub) => sub !== "---").join("+");
-    await axios.get("/subreddits/" + requestingSubs).then((response) => {
-      subreddits.value = response.data.subreddits;
-      while (subreddits.value.length < 4) {
-        subreddits.value.push(["nothing"]);
-      }
-    });
-  } else {
-    subreddits.value[0] = ["nothing"];
-  }
+  var requestingSubs = "";
+  requestingSubs = subs.value.filter((sub) => sub !== "---").join("+");
+  await axios.get("/subreddits/" + requestingSubs).then((response) => {
+    subreddits.value = response.data.subreddits;
+    while (subreddits.value.length < 4) {
+      subreddits.value.push(["---"]);
+    }
+  });
 }
 
 async function deleteSubreddit(index) {
@@ -39,7 +30,7 @@ async function deleteSubreddit(index) {
   }
   for (let i = count; i < 4; i++) {
     newSubreddits.push("---");
-    newSubmissions.push(["none"]);
+    newSubmissions.push(["---"]);
   }
   subs.value = newSubreddits;
   subreddits.value = newSubmissions;
