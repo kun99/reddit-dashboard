@@ -17,14 +17,8 @@ const subs = ref([
 const subreddits = ref([]);
 
 async function fetchSubreddit() {
-  var requestingSubs =
-    subs.value[0] +
-    "+" +
-    subs.value[1] +
-    "+" +
-    subs.value[2] +
-    "+" +
-    subs.value[3];
+  var requestingSubs = "";
+  requestingSubs = subs.value.filter((sub) => sub !== null).join("+");
   await axios.get("/subreddits/" + requestingSubs).then((response) => {
     subreddits.value = response.data;
     console.log(subreddits.value.subreddits);
@@ -33,15 +27,23 @@ async function fetchSubreddit() {
 
 async function deleteSubreddit(subreddit) {
   var newSubreddits = [];
-  followedSubreddits.value.forEach((sub) => {
+  subs.value.forEach((sub) => {
     if (subreddit !== sub) {
       newSubreddits.push(sub);
     }
   });
-  followedSubreddits.value = newSubreddits;
+  subs.value = newSubreddits;
   fetchSubreddit();
-  console.log(followedSubreddits.value);
+  console.log(subs.value);
 }
+
+function saveChanges() {
+  console.log(subs.value);
+  fetchSubreddit();
+}
+
+//view and edit functions are a bit ugly
+//maybe change them later?
 
 function view(index) {
   if (index === 0) {
@@ -56,14 +58,25 @@ function view(index) {
 }
 
 function edit(index) {
-  console.log(index);
   if (index === 0) {
+    if(firstView.value==false){
+      saveChanges();
+    }
     firstView.value = !firstView.value;
   } else if (index === 1) {
+    if(secondView.value==false){
+      saveChanges();
+    }
     secondView.value = !secondView.value;
   } else if (index === 2) {
+    if(thirdView.value==false){
+      saveChanges();
+    }
     thirdView.value = !thirdView.value;
   } else {
+    if(fourthView.value==false){
+      saveChanges();
+    }
     fourthView.value = !fourthView.value;
   }
 }
@@ -83,8 +96,7 @@ onBeforeMount(() => {
           r/{{ subreddit[index].sub }}
         </div>
         <div v-else class="flex justify-start w-1/3 text-xl pl-2">
-          <input v-model="subs[index]" class="rounded-md" />
-          <button @click="saveChanges">Save</button>
+          <input v-model="subs[index]" class="rounded-md bg-secondary blink" />
         </div>
         <div class="flex justify-end w-1/3 items-center">
           <button @click="edit(index)">
@@ -96,7 +108,7 @@ onBeforeMount(() => {
 
           <p
             class="text-stone-400 flex justify-center cursor-pointer text-xl px-1 mr-2"
-            @click="deleteSubreddit(followedSubreddits[index])"
+            @click="deleteSubreddit(subs[index])"
           >
             x
           </p>

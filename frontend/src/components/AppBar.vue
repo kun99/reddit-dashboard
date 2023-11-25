@@ -13,7 +13,7 @@
         <li>
           <RouterLink
             to="/dash#"
-            class="block py-2 px-3 text-text bg-primary rounded md:bg-transparent md:text-blue-700 md:p-0"
+            class="block py-2 px-3 text-text md:hover:text-primary md:p-0"
             aria-current="page"
             >Dashboard</RouterLink
           >
@@ -21,7 +21,7 @@
         <li>
           <RouterLink
             to="/login"
-            class="block py-2 px-3 text-text rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+            class="block py-2 px-3 text-text md:hover:text-primary md:p-0"
             >Login</RouterLink
           >
         </li>
