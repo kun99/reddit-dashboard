@@ -12,30 +12,37 @@ const subs = ref([
 const subreddits = ref([]);
 
 async function fetchSubreddit() {
-  if (subs.value[0] !== null) {
+  if (subs.value[0] != "---") {
     var requestingSubs = "";
-    requestingSubs = subs.value.filter((sub) => sub !== null).join("+");
+    requestingSubs = subs.value.filter((sub) => sub !== "---").join("+");
     await axios.get("/subreddits/" + requestingSubs).then((response) => {
-      subreddits.value = response.data;
+      subreddits.value = response.data.subreddits;
+      while (subreddits.value.length < 4) {
+        subreddits.value.push(["nothing"]);
+      }
     });
+  } else {
+    subreddits.value[0] = ["nothing"];
   }
 }
 
 async function deleteSubreddit(index) {
   var newSubreddits = [];
+  var newSubmissions = [];
   var count = 0;
   for (let i = 0; i < 4; i++) {
     if (i != index) {
       newSubreddits.push(subs.value[i]);
+      newSubmissions.push(subreddits.value[i]);
       count++;
     }
   }
   for (let i = count; i < 4; i++) {
-    newSubreddits.push(null);
+    newSubreddits.push("---");
+    newSubmissions.push(["none"]);
   }
   subs.value = newSubreddits;
-  console.log(subs);
-  fetchSubreddit();
+  subreddits.value = newSubmissions;
 }
 
 function saveChanges() {
@@ -52,8 +59,8 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div v-if="subs[0]!=null" class="grid grid-cols-4 my-4">
-    <div v-for="(subreddit, index) in subreddits.subreddits">
+  <div class="grid grid-cols-4 my-4">
+    <div v-for="(subreddit, index) in subreddits">
       <div
         class="flex flex-row justify-between items-center py-4 mb-2 mx-1 rounded-xl bg-slate-100"
       >
@@ -71,7 +78,6 @@ onBeforeMount(() => {
               icon="fa-solid fa-pencil"
             />
           </button>
-
           <p
             class="text-stone-400 flex justify-center cursor-pointer text-xl px-1 mr-2"
             @click="deleteSubreddit(index)"
@@ -84,6 +90,7 @@ onBeforeMount(() => {
         <a
           v-bind:href="submission.url"
           target="_blank"
+          v-if="submission.upvotes"
           class="h-48 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100"
         >
           <p
@@ -97,8 +104,5 @@ onBeforeMount(() => {
         </a>
       </div>
     </div>
-  </div>
-  <div v-else>
-    well we gotta do something when everythings deleted right?
   </div>
 </template>
