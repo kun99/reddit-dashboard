@@ -90,13 +90,13 @@ onBeforeMount(() => {
   <div class="grid grid-cols-4 my-4">
     <div v-for="(subreddit, index) in subreddits.subreddits">
       <div
-        class="flex flex-row justify-between items-center py-4 mb-2 mx-1 rounded-3xl bg-secondary"
+        class="flex flex-row justify-between items-center py-4 mb-2 mx-1 rounded-xl bg-slate-100"
       >
         <div v-if="view(index)" class="flex justify-start w-1/3 text-xl pl-2">
           r/{{ subreddit[index].sub }}
         </div>
         <div v-else class="flex justify-start w-1/3 text-xl pl-2">
-          <input v-model="subs[index]" class="rounded-md bg-secondary blink" />
+          r/<input v-model="subs[index]" class="rounded-md bg-slate-200 blink" />
         </div>
         <div class="flex justify-end w-1/3 items-center">
           <button @click="edit(index)">
