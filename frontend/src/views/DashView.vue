@@ -8,7 +8,7 @@ const subreddits = ref([["---"], ["---"], ["---"], ["---"]]);
 
 async function fetchSubreddit() {
   var requestingSubs = "";
-  requestingSubs = subs.value.filter((sub) => sub !== "---").join("+");
+  requestingSubs = subs.value.join("+");
   await axios.get("/subreddits/" + requestingSubs).then((response) => {
     subreddits.value = response.data.subreddits;
     while (subreddits.value.length < 4) {
