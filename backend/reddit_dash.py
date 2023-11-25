@@ -24,7 +24,7 @@ reddit = asyncpraw.Reddit(
 )
 
 @app.get("/subreddit/{subreddit}")
-async def get_subreddit_posts(subreddit):
+async def get_subreddit_post(subreddit):
     fetched_posts = []
     subreddit = reddit.subreddit(subreddit).hot(limit=10)
     for submission in subreddit:
@@ -39,7 +39,7 @@ async def get_subreddit_posts(subreddit):
 @app.get("/subreddits/{subreddits}")
 async def get_subreddit_posts(subreddits):
     subs = subreddits.split("+")
-    subs.pop()
+    print(subs)
     #for every subreddit, create a task to get submissions from it
     tasks =[]
     for subreddit in subs:
@@ -47,12 +47,13 @@ async def get_subreddit_posts(subreddits):
     results = await asyncio.gather(*tasks)
     return {"subreddits": results}
 
-async def fetch_submissions(subreddit):
-    subreddit = await reddit.subreddit(subreddit)
+async def fetch_submissions(sub_name):
+    sub = await reddit.subreddit(sub_name)
     fetched_posts = []
     #just retrieving submissions from the subreddit
-    async for submission in subreddit.hot(limit=10):
+    async for submission in sub.hot(limit=10):
         json_file = {
+            'sub': sub_name,
             'title': submission.title,
             'upvotes': str(submission.score),
             'url': "https://www.reddit.com" + submission.permalink,

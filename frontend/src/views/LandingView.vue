@@ -7,7 +7,7 @@
   <p
     class="mb-10 text-lg font-normal text-gray-500 lg:text-center lg:text-xl xl:px-60"
   >
-    Select up to four subreddits and check what's going on without having to open multiple tabs.
+    Select up to four subreddits and stay up to date without having to open multiple tabs.
   </p>
   <div class="flex flex-col mb-8 md:flex-row lg:justify-center">
     <RouterLink

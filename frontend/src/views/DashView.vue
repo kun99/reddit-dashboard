@@ -2,21 +2,30 @@
 import { ref, onBeforeMount } from "vue";
 import axios from "axios";
 
-const followedSubreddits = ref([
-  "learnprogramming",
+const firstView = ref(true);
+const secondView = ref(true);
+const thirdView = ref(true);
+const fourthView = ref(true);
+
+const subs = ref([
   "cscareerquestions",
   "csmajors",
   "devops",
+  "learnprogramming",
 ]);
 
 const subreddits = ref([]);
 
 async function fetchSubreddit() {
-  var subs = "";
-  followedSubreddits.value.forEach((sub) => {
-    subs = subs + sub + "+";
-  });
-  await axios.get("/subreddits/" + subs).then((response) => {
+  var requestingSubs =
+    subs.value[0] +
+    "+" +
+    subs.value[1] +
+    "+" +
+    subs.value[2] +
+    "+" +
+    subs.value[3];
+  await axios.get("/subreddits/" + requestingSubs).then((response) => {
     subreddits.value = response.data;
     console.log(subreddits.value.subreddits);
   });
@@ -34,6 +43,31 @@ async function deleteSubreddit(subreddit) {
   console.log(followedSubreddits.value);
 }
 
+function view(index) {
+  if (index === 0) {
+    return firstView.value;
+  } else if (index === 1) {
+    return secondView.value;
+  } else if (index === 2) {
+    return thirdView.value;
+  } else {
+    return fourthView.value;
+  }
+}
+
+function edit(index) {
+  console.log(index);
+  if (index === 0) {
+    firstView.value = !firstView.value;
+  } else if (index === 1) {
+    secondView.value = !secondView.value;
+  } else if (index === 2) {
+    thirdView.value = !thirdView.value;
+  } else {
+    fourthView.value = !fourthView.value;
+  }
+}
+
 onBeforeMount(() => {
   fetchSubreddit();
 });
@@ -42,18 +76,26 @@ onBeforeMount(() => {
 <template>
   <div class="grid grid-cols-4 my-4">
     <div v-for="(subreddit, index) in subreddits.subreddits">
-      <div class="flex flex-row justify-between items-center py-4 mb-2 mx-1 shadow rounded-3xl bg-secondary">
-        <div class="flex justify-start w-1/3 text-xl pl-2">
-          r/{{ followedSubreddits[index] }}
+      <div
+        class="flex flex-row justify-between items-center py-4 mb-2 mx-1 rounded-3xl bg-secondary"
+      >
+        <div v-if="view(index)" class="flex justify-start w-1/3 text-xl pl-2">
+          r/{{ subreddit[index].sub }}
+        </div>
+        <div v-else class="flex justify-start w-1/3 text-xl pl-2">
+          <input v-model="subs[index]" class="rounded-md" />
+          <button @click="saveChanges">Save</button>
         </div>
         <div class="flex justify-end w-1/3 items-center">
-          <font-awesome-icon
-            class="mt-2 mr-2 text-xs rounded-lg shadow"
-            icon="fa-solid fa-pencil"
+          <button @click="edit(index)">
+            <font-awesome-icon
+              class="mt-2 mr-2 text-xs"
+              icon="fa-solid fa-pencil"
+            />
+          </button>
 
-          />
           <p
-            class="text-stone-400 rounded-lg w-5 flex justify-center cursor-pointer text-xl shadow" 
+            class="text-stone-400 flex justify-center cursor-pointer text-xl px-1 mr-2"
             @click="deleteSubreddit(followedSubreddits[index])"
           >
             x
