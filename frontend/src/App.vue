@@ -7,7 +7,7 @@ import AppBar from "./components/AppBar.vue";
   <nav class="bg-background">
     <AppBar />
   </nav>
-  <main>
+  <main class="lg:mx-20">
     <RouterView />
   </main>
 </template>
