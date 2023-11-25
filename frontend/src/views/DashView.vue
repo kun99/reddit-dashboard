@@ -2,11 +2,6 @@
 import { ref, onBeforeMount } from "vue";
 import axios from "axios";
 
-const firstView = ref(true);
-const secondView = ref(true);
-const thirdView = ref(true);
-const fourthView = ref(true);
-
 const subs = ref([
   "cscareerquestions",
   "csmajors",
@@ -17,68 +12,38 @@ const subs = ref([
 const subreddits = ref([]);
 
 async function fetchSubreddit() {
-  var requestingSubs = "";
-  requestingSubs = subs.value.filter((sub) => sub !== null).join("+");
-  await axios.get("/subreddits/" + requestingSubs).then((response) => {
-    subreddits.value = response.data;
-    console.log(subreddits.value.subreddits);
-  });
+  if (subs.value[0] !== null) {
+    var requestingSubs = "";
+    requestingSubs = subs.value.filter((sub) => sub !== null).join("+");
+    await axios.get("/subreddits/" + requestingSubs).then((response) => {
+      subreddits.value = response.data;
+    });
+  }
 }
 
-async function deleteSubreddit(subreddit) {
+async function deleteSubreddit(index) {
   var newSubreddits = [];
-  subs.value.forEach((sub) => {
-    if (subreddit !== sub) {
-      newSubreddits.push(sub);
+  var count = 0;
+  for (let i = 0; i < 4; i++) {
+    if (i != index) {
+      newSubreddits.push(subs.value[i]);
+      count++;
     }
-  });
+  }
+  for (let i = count; i < 4; i++) {
+    newSubreddits.push(null);
+  }
   subs.value = newSubreddits;
+  console.log(subs);
   fetchSubreddit();
-  console.log(subs.value);
 }
 
 function saveChanges() {
-  console.log(subs.value);
   fetchSubreddit();
 }
 
-//view and edit functions are a bit ugly
-//maybe change them later?
-
-function view(index) {
-  if (index === 0) {
-    return firstView.value;
-  } else if (index === 1) {
-    return secondView.value;
-  } else if (index === 2) {
-    return thirdView.value;
-  } else {
-    return fourthView.value;
-  }
-}
-
-function edit(index) {
-  if (index === 0) {
-    if(firstView.value==false){
-      saveChanges();
-    }
-    firstView.value = !firstView.value;
-  } else if (index === 1) {
-    if(secondView.value==false){
-      saveChanges();
-    }
-    secondView.value = !secondView.value;
-  } else if (index === 2) {
-    if(thirdView.value==false){
-      saveChanges();
-    }
-    thirdView.value = !thirdView.value;
-  } else {
-    if(fourthView.value==false){
-      saveChanges();
-    }
-    fourthView.value = !fourthView.value;
-  }
+function edit() {
+  saveChanges();
 }
 
 onBeforeMount(() => {
@@ -87,16 +52,17 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="grid grid-cols-4 my-4">
+  <div v-if="subs[0]!=null" class="grid grid-cols-4 my-4">
     <div v-for="(subreddit, index) in subreddits.subreddits">
       <div
         class="flex flex-row justify-between items-center py-4 mb-2 mx-1 rounded-xl bg-slate-100"
       >
-        <div v-if="view(index)" class="flex justify-start w-1/3 text-xl pl-2">
-          r/{{ subreddit[index].sub }}
-        </div>
-        <div v-else class="flex justify-start w-1/3 text-xl pl-2">
-          r/<input v-model="subs[index]" class="rounded-md bg-slate-200 blink" />
+        <div class="flex justify-start w-1/3 text-xl pl-2">
+          r/<input
+            v-model="subs[index]"
+            v-on:keyup.enter="saveChanges"
+            class="rounded-md bg-slate-100"
+          />
         </div>
         <div class="flex justify-end w-1/3 items-center">
           <button @click="edit(index)">
@@ -108,7 +74,7 @@ onBeforeMount(() => {
 
           <p
             class="text-stone-400 flex justify-center cursor-pointer text-xl px-1 mr-2"
-            @click="deleteSubreddit(subs[index])"
+            @click="deleteSubreddit(index)"
           >
             x
           </p>
@@ -131,5 +97,8 @@ onBeforeMount(() => {
         </a>
       </div>
     </div>
+  </div>
+  <div v-else>
+    well we gotta do something when everythings deleted right?
   </div>
 </template>

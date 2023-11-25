@@ -1,13 +1,12 @@
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { ref } from "vue";
 
 const username = ref("");
 const password = ref("");
-
 </script>
 
 <template>
-  <div class=" h-96 flex items-center justify-center">
+  <div class="h-96 flex items-center justify-center">
     <div class="bg-white p-8 rounded shadow-md w-96">
       <h2 class="text-2xl font-semibold mb-4">Login</h2>
       <form @submit.prevent="login">
@@ -36,6 +35,9 @@ const password = ref("");
             v-model="password"
             class="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
           />
+        </div>
+        <div class="pb-2">
+          <RouterLink to="/register" class=" cursor-pointer text-sm"> Not registered? </RouterLink>
         </div>
         <button
           type="submit"
