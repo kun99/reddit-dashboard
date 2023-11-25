@@ -36,18 +36,21 @@ async def get_subreddit_posts(subreddits):
 
 async def fetch_submissions(sub_name):
     if(sub_name!="---"):
-        sub = await reddit.subreddit(sub_name)
-        fetched_posts = []
-        #just retrieving submissions from the subreddit
-        async for submission in sub.hot(limit=10):
-            json_file = {
-                'sub': sub_name,
-                'title': submission.title,
-                'upvotes': str(submission.score),
-                'url': "https://www.reddit.com" + submission.permalink,
-                'image': submission.url
-            }
-            fetched_posts.append(json_file)
+        try:
+            sub = await reddit.subreddit(sub_name)
+            fetched_posts = []
+            #just retrieving submissions from the subreddit
+            async for submission in sub.hot(limit=10):
+                json_file = {
+                    'sub': sub_name,
+                    'title': submission.title,
+                    'upvotes': str(submission.score),
+                    'url': "https://www.reddit.com" + submission.permalink,
+                    'image': submission.url
+                }
+                fetched_posts.append(json_file)
+        except Exception as e:
+            fetched_posts = ['---']
     else:
         fetched_posts = ['---']
     return fetched_posts
