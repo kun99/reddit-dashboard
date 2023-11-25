@@ -1,8 +1,27 @@
 <script setup>
 import { ref } from "vue";
+import  router from "@/router/index.js";
 
-const username = ref("");
+const email = ref("");
 const password = ref("");
+
+import { signInWithEmailAndPassword  } from "firebase/auth";
+import { auth } from "../js/firebase.js";
+
+function login() {
+  signInWithEmailAndPassword(auth, email.value, password.value)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log(user);
+      console.log(userCredential);
+      router.push('/dash')
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode + errorMessage);
+    });
+}
 </script>
 
 <template>
@@ -12,14 +31,14 @@ const password = ref("");
       <form @submit.prevent="login">
         <div class="mb-4">
           <label
-            for="username"
+            for="email"
             class="block text-gray-600 text-sm font-medium mb-2"
-            >Username</label
+            >Email</label
           >
           <input
             type="text"
-            id="username"
-            v-model="username"
+            id="email"
+            v-model="email"
             class="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>

@@ -55,14 +55,14 @@ onBeforeMount(() => {
       <div
         class="flex flex-row justify-between items-center py-4 mb-2 mx-1 rounded-xl bg-slate-100"
       >
-        <div class="flex justify-start w-1/3 text-xl pl-2">
+        <div class="flex justify-start text-xl pl-2">
           r/<input
             v-model="subs[index]"
             v-on:keyup.enter="saveChanges"
-            class="rounded-md bg-slate-100"
+            class="rounded-md bg-slate-100 w-full"
           />
         </div>
-        <div class="flex justify-end w-1/3 items-center">
+        <div class="flex justify-end items-center">
           <button @click="edit(index)">
             <font-awesome-icon
               class="mt-2 mr-2 text-xs"
@@ -82,7 +82,7 @@ onBeforeMount(() => {
           v-bind:href="submission.url"
           target="_blank"
           v-if="submission.upvotes"
-          class="h-48 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100"
+          class="h-48 block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100"
         >
           <p
             class="h-28 mb-4 overflow-auto text-ellipsis text-xl font-bold tracking-tight text-gray-900"
