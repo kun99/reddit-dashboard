@@ -6,13 +6,13 @@
       <img src="../../assets/dreddit.png" class="pr-3" />
       reddit dashboard
     </RouterLink>
-    <div class="hidden w-full md:block md:w-auto">
+    <div class="block w-auto">
       <ul
-        class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white"
+        class="font-medium flex p-4 border-gray-100 rounded-lg md:space-x-8 mt-0 border-0 bg-white"
       >
         <li>
           <RouterLink
-            to="/dash#"
+            to="/dash"
             class="block py-2 px-3 text-text md:hover:text-primary md:p-0"
             aria-current="page"
             >Dashboard</RouterLink

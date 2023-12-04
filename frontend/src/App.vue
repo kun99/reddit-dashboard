@@ -1,6 +1,8 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
 import AppBar from "./components/AppBar.vue";
+import { useUserStore } from "@/store/store.js";
+
 </script>
 
 <template>

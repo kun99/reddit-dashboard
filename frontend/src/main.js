@@ -8,9 +8,9 @@ import './index.css'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faPencil } from '@fortawesome/free-solid-svg-icons'
+import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faPencil)
+library.add(faPencil, faTrash)
 
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
 

@@ -2,9 +2,9 @@
 import { ref, onBeforeMount } from "vue";
 import axios from "axios";
 
-const subs = ref(["---", "---", "---", "---"]);
+const subs = ref(["", "", "", ""]);
 
-const subreddits = ref([["---"], ["---"], ["---"], ["---"]]);
+const subreddits = ref([[""], [""], [""], [""]]);
 
 async function fetchSubreddit() {
   var requestingSubs = "";
@@ -12,7 +12,7 @@ async function fetchSubreddit() {
   await axios.get("/subreddits/" + requestingSubs).then((response) => {
     subreddits.value = response.data.subreddits;
     while (subreddits.value.length < 4) {
-      subreddits.value.push(["---"]);
+      subreddits.value.push([""]);
     }
   });
 }
@@ -29,8 +29,8 @@ async function deleteSubreddit(index) {
     }
   }
   for (let i = count; i < 4; i++) {
-    newSubreddits.push("---");
-    newSubmissions.push(["---"]);
+    newSubreddits.push("");
+    newSubmissions.push([""]);
   }
   subs.value = newSubreddits;
   subreddits.value = newSubmissions;
@@ -62,19 +62,13 @@ onBeforeMount(() => {
             class="rounded-md bg-slate-100 w-full"
           />
         </div>
-        <div class="flex justify-end items-center">
-          <button @click="edit(index)">
+        <div>
+          <button class="pr-2" @click="deleteSubreddit(index)">
             <font-awesome-icon
-              class="mt-2 mr-2 text-xs"
-              icon="fa-solid fa-pencil"
+              class="text-xs"
+              icon="fa-solid fa-trash"
             />
           </button>
-          <p
-            class="text-stone-400 flex justify-center cursor-pointer text-xl px-1 mr-2"
-            @click="deleteSubreddit(index)"
-          >
-            x
-          </p>
         </div>
       </div>
       <div v-for="submission in subreddit">

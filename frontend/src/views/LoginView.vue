@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import  router from "@/router/index.js";
+import { useUserStore } from "@/store/store.js";
 
 const email = ref("");
 const password = ref("");
@@ -12,8 +13,11 @@ function login() {
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then((userCredential) => {
       const user = userCredential.user;
+      const userStore = useUserStore();
+      const { setId, setName } = userStore;
       console.log(user);
-      console.log(userCredential);
+      setId(user.uid)
+      setName(user.email)
       router.push('/dash')
     })
     .catch((error) => {
@@ -60,7 +64,7 @@ function login() {
         </div>
         <button
           type="submit"
-          class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+          class="bg-primary text-white px-4 py-2 rounded hover:bg-orange-600 focus:outline-none focus:ring focus:border-blue-300"
         >
           Login
         </button>
